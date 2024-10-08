@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2>Member Dashboard</h2>
+    <button class="btn btn-danger" onclick="logout()">Logout</button>
+
+    <h3 class="mt-4">Available Books</h3>
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published</th>
+            <th>Content</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="bookList">
+          <!-- Books will be loaded here -->
+        </tbody>
+      </table>
+
+    <h3 class="mt-4">My Borrowed Books History</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Book</th>
+          <th>Borrow Date</th>
+          <th>status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="borrowedHistoryList">
+        <!-- Borrowed books history will be loaded here -->
+      </tbody>
+    </table>
+    <button class="btn btn-danger mt-4" id="deleteAccount">Delete Account</button>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
