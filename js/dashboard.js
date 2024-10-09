@@ -1,12 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
     const pathname = window.location.pathname;
+    const authdata = JSON.parse(localStorage.getItem('auth'));
+    if(authdata === null){
+        window.location.href = 'index.html';
+    }
+    const user = authdata.user;
   
-    if (pathname.includes('Libraian_dashboard.html')) {
+    if (authdata!=null && user.role === 'Libraian' && pathname.includes('Libraian_dashboard.html')) {
       loadBooks();
       GetActiveUsers();
       DeActiveUserList();
       historyLibrary();
-    } else if (pathname.includes('member_dashboard.html')) {
+    } else if (authdata!==null && user.role === 'student' && pathname.includes('member_dashboard.html')) {
       loadBooks();
       borrowedbookhistory();
     }
