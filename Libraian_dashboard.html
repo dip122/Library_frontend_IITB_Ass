@@ -12,7 +12,7 @@
     <button class="btn btn-danger" id="logout" onclick="logout()">Logout</button>
 
     <h3 class="mt-4">Manage Books</h3>
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#bookModal">Add Book</button>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#bookModal" onclick="addbook()">Add Book</button>
     <table class="table">
       <thead>
         <tr>
@@ -29,7 +29,7 @@
     </table>
 
     <!-- Modal for adding/editing books -->
-    <div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+    <div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true" data-bs-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -37,7 +37,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="bookForm">
+            <form id="bookFormList">
               <div class="mb-3">
                 <label for="bookTitle" class="form-label">Book Title</label>
                 <input type="text" class="form-control" id="bookTitle">
@@ -65,7 +65,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="editModalLabel">Add Book</h5>
+              <h5 class="modal-title" id="editModalLabel">Edit Book</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -86,7 +86,7 @@
                   <label for="bookAuthor" class="form-label">Book content</label>
                   <input type="text" class="form-control" id="editbookContent">
                 </div>
-                <button type="submit" class="btn btn-primary" id="add_saved_book">Save Book</button>
+                <button type="submit" class="btn btn-primary" id="add_edit_book">Save Book</button>
               </form>
             </div>
           </div>

@@ -4,7 +4,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
   const password = document.getElementById('loginPassword').value;
 
   try {
-    const response = await fetch('http://localhost:2003/api/v1/auth/login', {
+    const response = await fetch('https://library-backend-iitb-ass.onrender.com/api/v1/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })

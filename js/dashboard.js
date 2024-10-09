@@ -23,6 +23,61 @@ document.addEventListener('DOMContentLoaded', function () {
     window.location.href = 'login.html';
   }
 
+  document.getElementById('bookFormList').addEventListener("submit" , async function(e) {
+    e.preventDefault();
+    console.log('dipayan');
+    const name = document.getElementById('bookTitle').value;
+    const author = document.getElementById('bookAuthor').value;
+    const Published = document.getElementById('bookPublished').value;
+    const content = document.getElementById('bookContent').value;
+    const auth = localStorage.getItem('auth');
+    const data = JSON.parse(auth);
+    const token = data.Token;
+    console.log(token);
+
+    const response = await fetch('https://library-backend-iitb-ass.onrender.com/api/v1/book/addbook' , {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': token
+        },
+        body: JSON.stringify({ name, author,  Published , content }),
+    });
+
+    console.log(response);
+
+    if(response.ok){
+        const data = await response.json();
+        if(data && data.success === true){
+            console.log('Dipayan Ghosh')
+            if(data && data.book!=undefined){
+                const books = await data.book;
+                console.log(books);
+                const bookList = document.getElementById('bookList');
+                books.forEach(book => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td>${book.name}</td>
+                        <td>${book.author}</td>
+                        <td>${book.Published === undefined ? "Not available" : book.Published}</td>
+                        <td>${book.content}</td>
+                        <td>
+                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#bookModal" onclick="editBook('${book._id}')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteBook('${book._id}')">Delete</button>
+                        </td>
+                    `;
+                    bookList.appendChild(row);
+                })
+            }
+        }else{
+            alert('Book Not added successfully');
+        }
+    }else{
+        alert('UnAuthorized Access');
+    }
+
+})
+
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
     const day = String(date.getDate()).padStart(2, '0'); 
@@ -47,7 +102,7 @@ const borrowedbookhistory = async () => {
         const userid = authdata.user._id;
         console.log(authdata);
 
-        const res = await fetch(`http://localhost:2003/api/v1/history/getallstudenthistory`, {
+        const res = await fetch(`https://library-backend-iitb-ass.onrender.com/api/v1/history/getallstudenthistory`, {
             method: 'GET',
             headers: {
                 'Authorization': token
@@ -95,7 +150,7 @@ const historyLibrary = async()=>{
     try{
         const authdata = JSON.parse(localStorage.getItem('auth'));
         const token = authdata.Token;
-        const res = await fetch('http://localhost:2003/api/v1/history/getallhistoryborrowed', {
+        const res = await fetch('https://library-backend-iitb-ass.onrender.com/api/v1/history/getallhistoryborrowed', {
             method : 'GET',
             headers : {
                 'Authorization' : token
@@ -129,7 +184,7 @@ const historyLibrary = async()=>{
     try{
         const authdata = JSON.parse(localStorage.getItem('auth'));
         const token = authdata.Token;
-        const res = await fetch(`http://localhost:2003/api/v1/book/returnbook/${book_id}` , {
+        const res = await fetch(`https://library-backend-iitb-ass.onrender.com/api/v1/book/returnbook/${book_id}` , {
             method : 'PUT',
             headers : {
                 'Authorization' : token
@@ -161,7 +216,7 @@ const historyLibrary = async()=>{
     try{
         const authdata = JSON.parse(localStorage.getItem('auth'));
         const token = authdata.Token;
-        const res = await fetch("http://localhost:2003/api/v1/auth/getallusersactive" , {
+        const res = await fetch("https://library-backend-iitb-ass.onrender.com/api/v1/auth/getallusersactive" , {
             headers : {
                 "Authorization" : token,
             }
@@ -191,7 +246,7 @@ const historyLibrary = async()=>{
     try{
         const authdata = JSON.parse(localStorage.getItem('auth'));
         const token = authdata.Token;
-        const res = await fetch('http://localhost:2003/api/v1/auth/getallusersdeleted' , {
+        const res = await fetch('https://library-backend-iitb-ass.onrender.com/api/v1/auth/getallusersdeleted' , {
             method : 'GET',
             headers : {
                 "Authorization" : token
@@ -226,7 +281,7 @@ const historyLibrary = async()=>{
   async function loadBooks() {
     const authdata = JSON.parse(localStorage.getItem('auth'));
     const token = authdata.Token;
-    const response = await fetch('http://localhost:2003/api/v1/book/getallbooks', {
+    const response = await fetch('https://library-backend-iitb-ass.onrender.com/api/v1/book/getallbooks', {
         headers : {
             'Authorization': token
         }
@@ -271,7 +326,7 @@ const historyLibrary = async()=>{
     try{
         const authdata = JSON.parse(localStorage.getItem('auth'));
         const token = authdata.Token;
-        const res = await fetch(`http://localhost:2003/api/v1/book/removebook/${book_id}`, {
+        const res = await fetch(`https://library-backend-iitb-ass.onrender.com/api/v1/book/removebook/${book_id}`, {
             method : 'DELETE',
             headers : {
                 'Authorization' : token
@@ -297,7 +352,7 @@ const historyLibrary = async()=>{
     try{
         const authdata = JSON.parse(localStorage.getItem('auth'));
         const token = authdata.Token;
-        const res = await fetch(`http://localhost:2003/api/v1/book/borrowbook/${book_id}`, {
+        const res = await fetch(`https://library-backend-iitb-ass.onrender.com/api/v1/book/borrowbook/${book_id}`, {
             method : 'PUT',
             headers : {
                 'Authorization' : token
@@ -336,7 +391,7 @@ const historyLibrary = async()=>{
             const content = document.getElementById('editbookContent').value;
 
             console.log(name, author, content);
-            const res = await fetch(`http://localhost:2003/api/v1/book/updatebooks/${bookId}`, {
+            const res = await fetch(`https://library-backend-iitb-ass.onrender.com/api/v1/book/updatebooks/${bookId}`, {
                 method : 'PUT',
                 headers : {
                     "Content-Type": "application/json",
@@ -369,7 +424,7 @@ const historyLibrary = async()=>{
         const id = authdata.user._id;
 
         try {
-            const res = await fetch(`http://localhost:2003/api/v1/auth/deleteuser/${id}`, {
+            const res = await fetch(`https://library-backend-iitb-ass.onrender.com/api/v1/auth/deleteuser/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': token
@@ -392,55 +447,58 @@ const historyLibrary = async()=>{
         }
 });
 
-  document.getElementById('bookForm')
-            .addEventListener("submit" , async function (e) {
-                e.preventDefault();
-                const name = document.getElementById('bookTitle').value;
-                const author = document.getElementById('bookAuthor').value;
-                const Published = document.getElementById('bookPublished').value;
-                const content = document.getElementById('bookContent').value;
-                const auth = localStorage.getItem('auth');
-                const data = JSON.parse(auth);
-                const token = data.Token;
-                console.log(token);
+    // document.getElementById('add_saved_book').addEventListener('click',async function(e) {
+    //             console.log(e);
+    //             e.preventDefault();
+    //             console.log('dipayan');
+    //             const name = document.getElementById('bookTitle').value;
+    //             const author = document.getElementById('bookAuthor').value;
+    //             const Published = document.getElementById('bookPublished').value;
+    //             const content = document.getElementById('bookContent').value;
+    //             const auth = localStorage.getItem('auth');
+    //             const data = JSON.parse(auth);
+    //             const token = data.Token;
+    //             console.log(token);
 
-                const response = await fetch('http://localhost:2003/api/v1/book/addbook' , {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                      'Authorization': token
-                    },
-                    body: JSON.stringify({ name, author,  Published , content }),
-                });
+    //             const response = await fetch('https://library-backend-iitb-ass.onrender.com/api/v1/book/addbook' , {
+    //                 method: "POST",
+    //                 headers: {
+    //                   "Content-Type": "application/json",
+    //                   'Authorization': token
+    //                 },
+    //                 body: JSON.stringify({ name, author,  Published , content }),
+    //             });
 
-                if(response.ok){
-                    const data = await response.json();
-                    if(data && data.success === true){
-                        console.log('Dipayan Ghosh')
-                        if(data && data.book!=undefined){
-                            const books = await data.book;
-                            console.log(books);
-                            const bookList = document.getElementById('bookList');
-                            books.forEach(book => {
-                                    const row = document.createElement('tr');
-                                    row.innerHTML = `
-                                    <td>${book.name}</td>
-                                    <td>${book.author}</td>
-                                    <td>${book.Published === undefined ? "Not available" : book.Published}</td>
-                                    <td>${book.content}</td>
-                                    <td>
-                                        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#bookModal" onclick="editBook('${book._id}')">Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteBook('${book._id}')">Delete</button>
-                                    </td>
-                                `;
-                                bookList.appendChild(row);
-                            })
-                        }
-                    }else{
-                        alert('Book Not added successfully');
-                    }
-                }else{
-                    alert('UnAuthorized Access');
-                }
+    //             console.log(response);
 
-            })
+    //             if(response.ok){
+    //                 const data = await response.json();
+    //                 if(data && data.success === true){
+    //                     console.log('Dipayan Ghosh')
+    //                     if(data && data.book!=undefined){
+    //                         const books = await data.book;
+    //                         console.log(books);
+    //                         const bookList = document.getElementById('bookList');
+    //                         books.forEach(book => {
+    //                                 const row = document.createElement('tr');
+    //                                 row.innerHTML = `
+    //                                 <td>${book.name}</td>
+    //                                 <td>${book.author}</td>
+    //                                 <td>${book.Published === undefined ? "Not available" : book.Published}</td>
+    //                                 <td>${book.content}</td>
+    //                                 <td>
+    //                                     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#bookModal" onclick="editBook('${book._id}')">Edit</button>
+    //                                     <button class="btn btn-danger btn-sm" onclick="deleteBook('${book._id}')">Delete</button>
+    //                                 </td>
+    //                             `;
+    //                             bookList.appendChild(row);
+    //                         })
+    //                     }
+    //                 }else{
+    //                     alert('Book Not added successfully');
+    //                 }
+    //             }else{
+    //                 alert('UnAuthorized Access');
+    //             }
+
+    //         })

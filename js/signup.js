@@ -8,7 +8,7 @@ document
     const password = document.getElementById("password").value;
     const role = document.getElementById("role").value;
 
-    const response = await fetch("http://localhost:2003/api/v1/auth/register", {
+    const response = await fetch("https://library-backend-iitb-ass.onrender.com/api/v1/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
