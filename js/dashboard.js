@@ -351,11 +351,11 @@ const historyLibrary = async()=>{
     }
     const user = authdata.user;
   
-    if (authdata!=null && user.role === 'Libraian' && pathname.includes('Libraian_dashboard.html')) {
+    if (authdata!=null && user.role === 'Libraian' && pathname.includes('libraian_dashboard')) {
       loadBooks();
-    //   GetActiveUsers();
-    //   DeActiveUserList();
-    //   historyLibrary();
+      GetActiveUsers();
+      DeActiveUserList();
+      historyLibrary();
     } else if (authdata!==null && user.role === 'student' && pathname.includes('member_dashboard.html')) {
       loadBooks();
       borrowedbookhistory();
